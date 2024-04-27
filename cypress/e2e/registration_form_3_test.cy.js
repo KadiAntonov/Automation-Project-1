@@ -187,7 +187,7 @@ describe('Functional tests for registration form 3', () => {
         cy.get('.w3-container > button').click()
 
         // Check that submission page opens
-        cy.url().should('contain', '/upload_file.html')
+        cy.url().should('contain', '/upload_file.html').and('contain', 'checkbox1_error.png')
         cy.get('h1').should('contain', 'Submission received')
     })
 })
