@@ -66,8 +66,8 @@ describe('Section 1: Functional tests', () => {
         cy.get('[data-cy="name"]').type(StaticFirstName)
         cy.get('[data-testid="lastNameTestId"]').type(StaticLastName)
         cy.get('[data-testid="phoneNumberTestId"]').type(StaticPhone)
-        cy.get('#htmlFavLanguage').click()
-        cy.get('#vehicle1').click()
+        cy.get('#htmlFavLanguage').check()
+        cy.get('#vehicle1').check()
         cy.get('select#cars').select('Saab')
         cy.get('select#animal').select('Snake')
         cy.get("input[name='password']").type(StaticPassword)
@@ -137,6 +137,14 @@ describe('Section 2: Visual tests', () => {
 
     it('My test for second picture', () => {
         // Create similar test for checking the second picture
+        cy.log('Will check logo source and size')
+        cy.get('[data-cy="cypress_logo"]').should('have.attr', 'src').should('include', 'cypress_logo')
+
+        // get element and check its parameter height
+        // it should be less than 178 and greater than 100
+        cy.get('[data-cy="cypress_logo"]').invoke('height').should('be.lessThan', 178)
+            .and('be.greaterThan', 80)
+
     });
 
     it('Check navigation part', () => {
@@ -145,7 +153,7 @@ describe('Section 2: Visual tests', () => {
         // Get navigation element, find siblings that contains h1 and check if it has Registration form in string
         cy.get('nav').siblings('h1').should('have.text', 'Registration form number 2')
         
-        // Get navigation element, find its first child, check the link content and click it
+        // Get navigation element, find its second child, check the link content and click it
         cy.get('nav').children().eq(0).should('be.visible')
             .and('have.attr', 'href', 'registration_form_1.html')
             .click()
@@ -159,6 +167,25 @@ describe('Section 2: Visual tests', () => {
     })
 
     // Create similar test for checking the second link 
+
+    it('Check navigation part 2', () => {
+        cy.get('nav').children().should('have.length', 2)
+
+        // Get navigation element, find siblings that contains h1 and check if it has Registration form in string
+        cy.get('nav').siblings('h1').should('have.text', 'Registration form number 2')
+        
+        // Get navigation element, find its first child, check the link content and click it
+        cy.get('nav').children().eq(1).should('be.visible')
+            .and('have.attr', 'href', 'registration_form_3.html')
+            .click()
+        
+        // Check that currently opened URL is correct
+        cy.url().should('contain', '/registration_form_3.html')
+        
+        // Go back to previous page
+        cy.go('back')
+        cy.log('Back again in registration form 2')
+    })
 
     it('Check that radio button list is correct', () => {
         // Array of found elements with given selector has 4 elements in total
@@ -184,6 +211,28 @@ describe('Section 2: Visual tests', () => {
 
     // Create test similar to previous one verifying check boxes
 
+    it('Check that checkbox list is correct', () => {
+        // Array of found elements with given selector has 3 elements in total
+        cy.get('input[type="checkbox"]').should('have.length', 3)
+
+        // Verify labels of the checkboxes
+        cy.get('input[type="checkbox"]').next().eq(0).should('have.text','I have a bike')
+        cy.get('input[type="checkbox"]').next().eq(1).should('have.text','I have a car')
+        cy.get('input[type="checkbox"]').next().eq(2).should('have.text','I have a boat')
+
+        //Verify default state of checkboxes
+        cy.get('input[type="checkbox"]').eq(0).should('not.be.checked')
+        cy.get('input[type="checkbox"]').eq(1).should('not.be.checked')
+        cy.get('input[type="checkbox"]').eq(2).should('not.be.checked')
+
+        // Selecting one will keep selection of the other checkbox
+        cy.get('input[type="checkbox"]').eq(0).check().should('be.checked')
+        cy.get('input[type="checkbox"]').eq(1).check().should('be.checked')
+        cy.get('input[type="checkbox"]').eq(0).should('be.checked')
+
+    })
+
+    // Check that the dropdown of favorite animals is correct
     it('Car dropdown is correct', () => {
         // Here is just an example how to explicitely create screenshot from the code
         // Select second element and create screenshot for this area or full page
@@ -205,8 +254,22 @@ describe('Section 2: Visual tests', () => {
         })
     })
 
-    // Create test similar to previous one
+    // Check that the dropdown of favorite animals is correct
 
+    it('Favourite animal dropdown is correct', () => {
+
+        // Array of found elements with given selector has 6 elements in total
+        cy.get('#animal').find('option').should('have.length', 6)
+
+        // Check that all elements in the dropdown have correct text
+        cy.get('#animal').find('option').eq(0).should('have.text', 'Dog')
+        cy.get('#animal').find('option').eq(1).should('have.text', 'Cat')
+        cy.get('#animal').find('option').eq(2).should('have.text', 'Snake')
+        cy.get('#animal').find('option').eq(3).should('have.text', 'Hippo')
+        cy.get('#animal').find('option').eq(4).should('have.text', 'Cow')
+        cy.get('#animal').find('option').eq(5).should('have.text', 'Horse')
+    })
+    
 })
    
 //inputValidData('JohnDoe')
