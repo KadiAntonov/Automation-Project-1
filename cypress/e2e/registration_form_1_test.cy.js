@@ -16,9 +16,9 @@ Assignment 2:
  5. Add comment to the first test containing today’s date
  */
 
-// 22.04.2024
  describe('This is first test suite, Kadi Antonov', () => {
     it('User can submit data only when valid mandatory values are added', () => {
+        // 22.04.2024
         cy.get('[data-testid="phoneNumberTestId"]').type('555666777')
         cy.get('input[name="firstName"]').type('Kadi')
         cy.get('input[name="lastName"]').type('Test')
