@@ -132,7 +132,6 @@ Task list:
 describe('Functional tests for registration form 3', () => {
 
     it('Submit form with all fields filled', () => {
-        // Check that it is possible to submit form with all fields filled
         cy.get('#name').type(fullName)
         cy.get('.email').type(validEmail)
         cy.get('select#country').select('Spain')
@@ -143,11 +142,7 @@ describe('Functional tests for registration form 3', () => {
         cy.get('.ng-pristine').check()
         cy.get(':nth-child(15) > :nth-child(2)').check()
         cy.get('h2').contains('Birthday').click()
-
-        // Assert that submit button is enabled
         cy.get(':nth-child(2) > input').should('be.enabled')
-
-        // Click submit and check that success page opens
         cy.get(':nth-child(2) > input').click()
         cy.url().should('contain', '/upload_file.html')
         cy.get('h1').should('contain', 'Submission received')
@@ -158,11 +153,7 @@ describe('Functional tests for registration form 3', () => {
         cy.get('select#country').select('Spain')
         cy.get('select#city').select('Malaga')
         cy.get('.ng-pristine').check()
-
-        // Assert that submit button is enabled
         cy.get(':nth-child(2) > input').should('be.enabled')
-
-        // Click submit and check that success page opens
         cy.get(':nth-child(2) > input').click()
         cy.url().should('contain', '/upload_file.html')
         cy.get('h1').should('contain', 'Submission received')
@@ -170,24 +161,18 @@ describe('Functional tests for registration form 3', () => {
 
     it('Try to submit form with mandatory fields empty', () => {
         inputValidData('John Doe')
-
-        // Clear mandatory fields
         cy.get('.email').scrollIntoView()
         cy.get('.email').clear()
         cy.get('select#country').select('')
         cy.get(':nth-child(15) > .ng-dirty').uncheck()
         cy.get('h2').contains('Birthday').click()
-
-        // Assert that submit button is disabled
         cy.get(':nth-child(2) > input').should('be.disabled')
     })
 
     it('Upload a file and submit it', () => {
-        cy.upload_file('checkbox1_error.png', 'image/png', 'input[type="file"]')
+        cy.upload_file('load_this_file_reg_form_3.txt', 'text/plain', 'input[type="file"]')
         cy.get('.w3-container > button').click()
-
-        // Check that submission page opens
-        cy.url().should('contain', '/upload_file.html').and('contain', 'checkbox1_error.png')
+        cy.url().should('contain', '/upload_file.html').and('contain', 'load_this_file_reg_form_3.txt')
         cy.get('h1').should('contain', 'Submission received')
     })
 })
